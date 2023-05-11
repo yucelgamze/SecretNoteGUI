@@ -37,6 +37,7 @@ def decryption():
     
     decryption_file = open("message.txt",mode='w')
     decryption_file.write(text)
+    decryption_file.close()
     
 
 window =Tk()
