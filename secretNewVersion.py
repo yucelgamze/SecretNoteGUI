@@ -10,7 +10,7 @@ def encryption():
     text = text_input.get("1.0", END)
     ciphter_text = ""
     text_input.delete("1.0", END)
-    password_input.delete("1.0",END)
+    password_input.delete(0,END)
     
     if password_input.get() == "1234":
         
@@ -32,7 +32,7 @@ def decryption():
     ciphter_text = text_input.get("1.0", END)
     text = ""
     text_input.delete("1.0", END)
-    password_input.delete("1.0", END)
+    password_input.delete(0, END)
     
     if password_input.get() == "1234":
         
