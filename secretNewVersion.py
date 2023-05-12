@@ -1,37 +1,30 @@
-import random
-import string
 from tkinter import *
-from tkinter import messagebox
-from PIL import Image,ImageTk
-
-#global variables
-chars = " " + string.punctuation + string.digits + string.ascii_letters + "\n"
-chars = list(chars)
-
-key = chars.copy()
-random.shuffle(key)
+import pybase64
+from PIL import Image, ImageTk
+from  tkinter import messagebox
 
 FONT = ("didot",20,"bold")
-
 
 #Encryption
 def encryption():
     text = text_input.get("1.0", END)
     ciphter_text = ""
     text_input.delete("1.0", END)
-
+    password_input.delete("1.0",END)
+    
     if password_input.get() == "1234":
         
-        for character in text:
-            i = chars.index(character)
-            ciphter_text += key[i]
+        text = text.encode("ascii")
+        text = pybase64.b64encode(text)
+        ciphter_text = text.decode("ascii")
         
-        encryption_file = open("secret.txt",mode='w')
+        encryption_file = open("secret.txt", mode='w')
         encryption_file.write(ciphter_text) 
-        encryption_file.close()  
+        encryption_file.close()     
         
     else:
-           messagebox.showwarning("Invalid Value!", "Incorrect Password, Please Try Again!")
+        
+        messagebox.showwarning("Invalid Value!", "Incorrect Password, Please Try Again!")
     
 
 #Decryption
@@ -39,20 +32,22 @@ def decryption():
     ciphter_text = text_input.get("1.0", END)
     text = ""
     text_input.delete("1.0", END)
+    password_input.delete("1.0", END)
     
     if password_input.get() == "1234":
         
-        for character in ciphter_text:
-            i = key.index(character)
-            text += chars[i]
+        ciphter_text = ciphter_text.encode("ascii")
+        ciphter_text = pybase64.b64decode(ciphter_text)
+        text = ciphter_text.decode("ascii")
         
-        decryption_file = open("message.txt",mode='w')
+        decryption_file = open("message.txt", mode='w')
         decryption_file.write(text)
         decryption_file.close()
+        
     else:
         
         messagebox.showwarning("Invalid Value!", "Incorrect Password, Please Try Again!")
-    
+
 def clear():
     text_input.delete(1.0, END)
     password_input.delete(0, END)
@@ -88,6 +83,7 @@ password_label.pack(pady=10)
 
 password_input = Entry(font=FONT, width=30, show="*")
 password_input.pack(pady=10)
+
 
 image = Image.open("output3.png")
 image_resized = image.resize((150,150))
